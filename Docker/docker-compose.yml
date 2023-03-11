@@ -8,8 +8,7 @@ services:
 
   server1:
     # Docker image to be used
-    image: ${NEO4J_DOCKER_IMAGE}
-
+    image: neo4j:5-enterprise
     # Hostname
     hostname: server1
 
@@ -38,10 +37,10 @@ services:
 
     # Passes the following environment variables to the container
     environment:
-      - NEO4J_ACCEPT_LICENSE_AGREEMENT
-      - NEO4J_AUTH
-      - EXTENDED_CONF
-      - NEO4J_EDITION
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_AUTH=neo4j/fedeymanu
+      - EXTENDED_CONF=yes
+      - NEO4J_EDITION=docker_compose
       - NEO4J_initial_server_mode__constraint=PRIMARY
 
     # Simple check testing whether the port 7474 is opened.
@@ -54,7 +53,7 @@ services:
     user: ${USER_ID}:${GROUP_ID}
 
   server2:
-    image: ${NEO4J_DOCKER_IMAGE}
+    image: neo4j:5-enterprise    
     hostname: server2
     networks:
       neo4j-internal:
@@ -73,17 +72,17 @@ services:
       #- ./licenses/server2:/var/lib/neo4j/licensesc
       #- ./ssl/server2:/var/lib/neo4j/ssl
     environment:
-      - NEO4J_ACCEPT_LICENSE_AGREEMENT
-      - NEO4J_AUTH
-      - EXTENDED_CONF
-      - NEO4J_EDITION
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_AUTH=neo4j/fedeymanu
+      - EXTENDED_CONF=yes
+      - NEO4J_EDITION=docker_compose
       - NEO4J_initial_server_mode__constraint=PRIMARY
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
     user: ${USER_ID}:${GROUP_ID}
 
   server3:
-    image: ${NEO4J_DOCKER_IMAGE}
+    image: neo4j:5-enterprise    
     hostname: server3
     networks:
       neo4j-internal:
@@ -102,17 +101,17 @@ services:
       #- ./licenses/server3:/var/lib/neo4j/licenses
       #- ./ssl/server3:/var/lib/neo4j/ssl
     environment:
-      - NEO4J_ACCEPT_LICENSE_AGREEMENT
-      - NEO4J_AUTH
-      - EXTENDED_CONF
-      - NEO4J_EDITION
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_AUTH=neo4j/fedeymanu
+      - EXTENDED_CONF=yes
+      - NEO4J_EDITION=docker_compose
       - NEO4J_initial_server_mode__constraint=PRIMARY
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
     user: ${USER_ID}:${GROUP_ID}
 
   server4:
-    image: ${NEO4J_DOCKER_IMAGE}
+    image: neo4j:5-enterprise    
     hostname: server4
     networks:
       neo4j-internal:
@@ -131,10 +130,10 @@ services:
       #- ./licenses/server4:/var/lib/neo4j/licenses
       #- ./ssl/server4:/var/lib/neo4j/ssl
     environment:
-      - NEO4J_ACCEPT_LICENSE_AGREEMENT
-      - NEO4J_AUTH
-      - EXTENDED_CONF
-      - NEO4J_EDITION
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_AUTH=neo4j/fedeymanu
+      - EXTENDED_CONF=yes
+      - NEO4J_EDITION=docker_compose
       - NEO4J_initial_server_mode__constraint=SECONDARY
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
