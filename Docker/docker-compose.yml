@@ -70,7 +70,7 @@ services:
       - ./conf/server2:/var/lib/neo4j/conf
       - ./import/server2:/var/lib/neo4j/import
       #- ./metrics/server2:/var/lib/neo4j/metrics
-      #- ./licenses/server2:/var/lib/neo4j/licenses
+      #- ./licenses/server2:/var/lib/neo4j/licensesc
       #- ./ssl/server2:/var/lib/neo4j/ssl
     environment:
       - NEO4J_ACCEPT_LICENSE_AGREEMENT
