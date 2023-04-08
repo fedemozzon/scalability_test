@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  memgraph1:
+    image: memgraph/memgraph-platform:latest
+    ports:
+      - "7687:7687"
+      - "7444:7444"
+      - "3000:3000"
+      - "8080:8080"
+    volumes:
+      - ./data/memgraph1:/var/lib/memgraph
+    environment:
+      MEMGRAPH_ISOLATED: "true"
+      MEMGRAPH_ROLE: "MASTER"
+      MEMGRAPH_REPLICA_URLS: "bolt://memgraph2:7687,bolt://memgraph3:7687"
+  memgraph2:
+    image: memgraph/memgraph-platform:latest
+    ports:
+      - "7688:7687"
+      - "8081:8080"
+      - "7445:7444"
+      - "3001:3000"
+    volumes:
+      - ./data/memgraph2:/var/lib/memgraph
+    environment:
+      MEMGRAPH_ISOLATED: "true"
+      MEMGRAPH_ROLE: "REPLICA"
+      MEMGRAPH_MASTER_URL: "bolt://memgraph1:7687"
+
+  memgraph3:
+    image: memgraph/memgraph-platform:latest
+    ports:
+      - "7689:7687"
+      - "7446:7444"
+      - "8082:8080"
+      - "3002:3000"
+    volumes:
+      - ./data/memgraph3:/var/lib/memgraph
+    environment:
+      MEMGRAPH_ISOLATED: "true"
+      MEMGRAPH_ROLE: "REPLICA"
+      MEMGRAPH_MASTER_URL: "bolt://memgraph1:7687"
