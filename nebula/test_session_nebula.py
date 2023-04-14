@@ -5,9 +5,8 @@ from typing import Dict
 from nebula3.data.ResultSet import ResultSet
 
 import logging
-import threading
 import time
-
+import concurrent.futures
 # # Sarasa para convertir a un dataframe de pandas, por ahora no interesa
 # def result_to_df(result: ResultSet) -> pd.DataFrame:
 #     """
@@ -50,12 +49,6 @@ import time
 # connection_pool.close()
 
 threads_size = 7
-def create_thread():
-    logging.info("Main    : create and start thread %d.", index)
-    x = threading.Thread(target=thread_function, args=(index,))
-    threads.append(x)
-    x.start()
-
 def thread_function(name):
     logging.info("Thread %s: starting", name)
     time.sleep(2)
@@ -64,10 +57,6 @@ def thread_function(name):
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
-threads = list()
-for index in range(threads_size):
-    create_thread()
-for index, thread in enumerate(threads):
-    logging.info("Main    : before joining thread %d.", index)
-    thread.join()
-    logging.info("Main    : thread %d done", index)
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=threads_size) as executor:
+        executor.map(thread_function, range(threads_size))
