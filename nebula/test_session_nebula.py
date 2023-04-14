@@ -6,6 +6,8 @@ from nebula3.data.ResultSet import ResultSet
 
 import logging
 import time
+from random import randint
+from time import perf_counter
 import concurrent.futures
 # # Sarasa para convertir a un dataframe de pandas, por ahora no interesa
 # def result_to_df(result: ResultSet) -> pd.DataFrame:
@@ -50,8 +52,12 @@ import concurrent.futures
 
 threads_size = 7
 def thread_function(name):
+    sleep = randint(1, 5)
+    t1_start = perf_counter()
     logging.info("Thread %s: starting", name)
-    time.sleep(2)
+    time.sleep(sleep)
+    t1_stop = perf_counter()
+    logging.info("The elapsed time for thread number %s is %s",name, t1_stop-t1_start)
     logging.info("Thread %s: finishing", name)
 
 format = "%(asctime)s: %(message)s"
