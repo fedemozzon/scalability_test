@@ -2,4 +2,9 @@ Docker/conf
 Docker/data
 Docker/logs
 Docker/import
+Docker/memgraph
+Docker/neo4j/data
+Docker/neo4j/conf
+nebula/data
+logs
 venv

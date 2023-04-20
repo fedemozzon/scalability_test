@@ -9,7 +9,7 @@ services:
       - "3000:3000"
       - "8080:8080"
     volumes:
-      - ./data/memgraph1:/var/lib/memgraph
+      - mg_lib:/var/lib/memgraph
     environment:
       MEMGRAPH_ISOLATED: "true"
       MEMGRAPH_ROLE: "MASTER"
@@ -22,7 +22,7 @@ services:
       - "7445:7444"
       - "3001:3000"
     volumes:
-      - ./data/memgraph2:/var/lib/memgraph
+      - mg_lib2:/var/lib/memgraph
     environment:
       MEMGRAPH_ISOLATED: "true"
       MEMGRAPH_ROLE: "REPLICA"
@@ -36,8 +36,13 @@ services:
       - "8082:8080"
       - "3002:3000"
     volumes:
-      - ./data/memgraph3:/var/lib/memgraph
+      - mg_lib3:/var/lib/memgraph
     environment:
       MEMGRAPH_ISOLATED: "true"
       MEMGRAPH_ROLE: "REPLICA"
       MEMGRAPH_MASTER_URL: "bolt://memgraph1:7687"
+
+volumes:
+  mg_lib:
+  mg_lib2:
+  mg_lib3:
