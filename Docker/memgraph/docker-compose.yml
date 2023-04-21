@@ -3,6 +3,8 @@ version: '3.7'
 services:
   memgraph1:
     image: memgraph/memgraph-platform:latest
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
     ports:
       - "7687:7687"
       - "7444:7444"
@@ -16,6 +18,8 @@ services:
       MEMGRAPH_REPLICA_URLS: "bolt://memgraph2:7687,bolt://memgraph3:7687"
   memgraph2:
     image: memgraph/memgraph-platform:latest
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
     ports:
       - "7688:7687"
       - "8081:8080"
@@ -30,6 +34,8 @@ services:
 
   memgraph3:
     image: memgraph/memgraph-platform:latest
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
     ports:
       - "7689:7687"
       - "7446:7444"
