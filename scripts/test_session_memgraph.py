@@ -23,6 +23,7 @@ def thread_function(name):
     results = memgraph.execute_and_fetch(query)
     print(list(results)[0]['result'])
     t1_stop = perf_counter()
+    logging.info(f'El thread {name} ejecutó la query de READ en {t1_stop-t1_start}')
     logging.info("Thread %s: finishing", name)
 
 memgraph = Memgraph(host='127.0.0.1', port=7687)
