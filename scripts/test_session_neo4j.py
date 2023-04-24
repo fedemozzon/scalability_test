@@ -59,25 +59,16 @@ THREADS_SIZE = 7
 def thread_function(name):
     t1_start = perf_counter()
     logging.info("Thread %s: starting", name)
-    query_read = "MATCH (n) RETURN n LIMIT 100;"
-    query_write = f'INSERT VERTEX users(name, email) VALUES {randint(10000, 500000)}:("John", "john@example.com");'
-    query = random.choice([query_read, query_write])
+    # Conexion a la db
+    db = DatabaseConnection(URL, USER, PASSWORD, DB_NAME)
+    print(db.insert("Manuel"))
     t1_stop = perf_counter()
-    logging.info(f'El thread {name} ejecutó la query de {"READ" if query == query_read else "WRITE"} en {t1_stop-t1_start}')
+    logging.info(f'El thread {name} ejecutó la query en {t1_stop-t1_start}')
     logging.info("Thread %s: finishing", name)
 
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
 
-# with concurrent.futures.ThreadPoolExecutor(max_workers=THREADS_SIZE) as executor:
-#         executor.map(thread_function, range(THREADS_SIZE))
-
-# Conexion a la db
-db = DatabaseConnection(URL, USER, PASSWORD, DB_NAME)
-
-# Insert para crear cosas (podemos cambiar la query)
-# db.insert("hola")
-
-# Por ahora el read retorna match 100 nodos cualquiera
-print(db.read())
+with concurrent.futures.ThreadPoolExecutor(max_workers=THREADS_SIZE) as executor:
+        executor.map(thread_function, range(THREADS_SIZE))
