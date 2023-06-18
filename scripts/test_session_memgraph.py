@@ -1,6 +1,7 @@
 import random
 from gqlalchemy import Memgraph
 import pandas as pd
+import datetime
 from typing import Dict
 
 import logging
@@ -25,6 +26,10 @@ def thread_function(name):
     t1_stop = perf_counter()
     logging.info(f'El thread {name} ejecutó la query de READ en {t1_stop-t1_start}')
     logging.info("Thread %s: finishing", name)
+    # Save info into a csv file
+    df = pd.DataFrame([['READ', datetime.datetime.now(), name, t1_stop - t1_start]],
+                      columns=['Operation', 'time', 'id_thread', 'time [s]'])
+    df.to_csv('memgraph.csv', index=False, mode='a', header=False)
 
 memgraph = Memgraph(host='127.0.0.1', port=7687)
 format = "%(asctime)s: %(message)s"

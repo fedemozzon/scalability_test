@@ -1,4 +1,5 @@
-### Para correr script con libreria de python de nebula
+ls
+ls### Para correr script con libreria de python de nebula
 
 1. Crear ambiente virtual: `python3 -m venv venv`
 2. Activar: `source venv/bin/activate`

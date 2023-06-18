@@ -2,6 +2,7 @@ import random
 from nebula3.gclient.net import ConnectionPool
 from nebula3.Config import Config
 from neo4j import GraphDatabase
+import datetime
 import pandas as pd
 from typing import Dict
 from nebula3.data.ResultSet import ResultSet
@@ -61,14 +62,27 @@ def thread_function(name):
     logging.info("Thread %s: starting", name)
     # Conexion a la db
     db = DatabaseConnection(URL, USER, PASSWORD, DB_NAME)
-    print(db.insert("Manuel"))
+    random_number = randint(0, 1)
+    op = "READ" if random_number == 0 else "WRITE"
+    if random_number == 0:
+        print(db.read())
+    else:
+        print(db.insert("Manuel"))
     t1_stop = perf_counter()
     logging.info(f'El thread {name} ejecutó la query en {t1_stop-t1_start}')
     logging.info("Thread %s: finishing", name)
 
-format = "%(asctime)s: %(message)s"
-logging.basicConfig(format=format, level=logging.INFO,
-                        datefmt="%H:%M:%S")
+    # Save info into a csv file
+    df = pd.DataFrame([[op,datetime.datetime.now(),name, t1_stop-t1_start]], columns=['Operation','time','id_thread', 'time [s]'])
+    df.to_csv('neo4j.csv', index=False, mode='a',header=False)
 
-with concurrent.futures.ThreadPoolExecutor(max_workers=THREADS_SIZE) as executor:
+
+
+
+for i in range(1000):
+    format = "%(asctime)s: %(message)s"
+    logging.basicConfig(format=format, level=logging.INFO,
+                        datefmt="%H:%M:%S")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=THREADS_SIZE) as executor:
         executor.map(thread_function, range(THREADS_SIZE))
+
