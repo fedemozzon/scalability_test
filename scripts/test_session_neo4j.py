@@ -1,4 +1,6 @@
 import random
+import threading
+
 from nebula3.gclient.net import ConnectionPool
 from nebula3.Config import Config
 from neo4j import GraphDatabase
@@ -18,6 +20,12 @@ URL = "bolt://localhost:7687" # Fijarse el puerto de cada nodo mapeado
 DB_NAME = "neo4j2"
 USER = "neo4j"
 PASSWORD = "fedeymanu"
+
+#Create a lock
+lock = threading.Lock()
+
+query_size = 10
+array_querys = [query_size,query_size]
 
 class DatabaseConnection():
     def __init__(self, uri, user, password, database) -> None:
@@ -66,8 +74,14 @@ def thread_function(name):
     op = "READ" if random_number == 0 else "WRITE"
     if random_number == 0:
         print(db.read())
+        with lock:
+            array_querys[0] -= 1
+            print(array_querys)
     else:
         print(db.insert("Manuel"))
+        with lock:
+            array_querys[1] -= 1
+            print(array_querys)
     t1_stop = perf_counter()
     logging.info(f'El thread {name} ejecutó la query en {t1_stop-t1_start}')
     logging.info("Thread %s: finishing", name)
@@ -79,7 +93,7 @@ def thread_function(name):
 
 
 
-for i in range(1000):
+while array_querys[0] > 0 or array_querys[1] > 0:
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
