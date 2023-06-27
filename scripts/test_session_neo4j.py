@@ -24,7 +24,7 @@ PASSWORD = "fedeymanu"
 #Create a lock
 lock = threading.Lock()
 
-query_size = 10
+query_size = 100
 array_querys = [query_size,query_size]
 
 class DatabaseConnection():
@@ -63,7 +63,7 @@ class DatabaseConnection():
             created_id = session.execute_write(self._write, name)
             print("created node with id " + str(created_id))
 
-THREADS_SIZE = 7
+THREADS_SIZE = 10
 
 def thread_function(name):
     t1_start = perf_counter()
@@ -72,14 +72,18 @@ def thread_function(name):
     db = DatabaseConnection(URL, USER, PASSWORD, DB_NAME)
     random_number = randint(0, 1)
     op = "READ" if random_number == 0 else "WRITE"
+    if(array_querys[0] == 0):
+        random_number = 1
+    elif(array_querys[1] == 0):
+        random_number = 0
     if random_number == 0:
-        print(db.read())
-        with lock:
+         print(db.read())
+         with lock:
             array_querys[0] -= 1
             print(array_querys)
     else:
-        print(db.insert("Manuel"))
-        with lock:
+         print(db.insert("Manuel"))
+         with lock:
             array_querys[1] -= 1
             print(array_querys)
     t1_stop = perf_counter()
