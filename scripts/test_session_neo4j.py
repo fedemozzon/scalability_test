@@ -1,21 +1,17 @@
-import random
 import threading
 
-from nebula3.gclient.net import ConnectionPool
-from nebula3.Config import Config
 from neo4j import GraphDatabase
 import datetime
 import pandas as pd
-from typing import Dict
-from nebula3.data.ResultSet import ResultSet
 
 import logging
-import time
 from random import randint
 from time import perf_counter
 import concurrent.futures
 
 # Constantes
+
+#DB
 URL = "bolt://localhost:7687" # Fijarse el puerto de cada nodo mapeado
 DB_NAME = "neo4j2"
 USER = "neo4j"
@@ -24,8 +20,11 @@ PASSWORD = "fedeymanu"
 #Create a lock
 lock = threading.Lock()
 
+# VARIOS
 query_size = 100
 array_querys = [query_size,query_size]
+THREADS_SIZE = 10
+
 
 class DatabaseConnection():
     def __init__(self, uri, user, password, database) -> None:
@@ -63,13 +62,11 @@ class DatabaseConnection():
             created_id = session.execute_write(self._write, name)
             print("created node with id " + str(created_id))
 
-THREADS_SIZE = 10
 
 def thread_function(name):
     t1_start = perf_counter()
     logging.info("Thread %s: starting", name)
     # Conexion a la db
-    db = DatabaseConnection(URL, USER, PASSWORD, DB_NAME)
     random_number = randint(0, 1)
     op = "READ" if random_number == 0 else "WRITE"
     if(array_querys[0] == 0):
@@ -96,6 +93,13 @@ def thread_function(name):
 
 
 
+# ver si la conexion funciona
+try:
+    db = DatabaseConnection(URL, USER, PASSWORD, DB_NAME)
+    db.read()
+except:
+    print("La conexión no se pudo establecer. verificar que al menos un contenedor este corriendo")
+    exit()
 
 while array_querys[0] > 0 or array_querys[1] > 0:
     format = "%(asctime)s: %(message)s"

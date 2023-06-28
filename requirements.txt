@@ -3,9 +3,9 @@ charset-normalizer==3.1.0
 future==0.18.3
 httplib2==0.22.0
 idna==3.4
-# gqlalchemy==1.4.1
+gqlalchemy==1.4.1
 nebula3-python==3.4.0
-neo4j==5.7.0
+#neo4j==5.7.0
 numpy==1.24.2
 pandas==2.0.0
 plyer==2.1.0

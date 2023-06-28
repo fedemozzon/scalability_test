@@ -4,6 +4,9 @@ Docker/logs
 Docker/import
 Docker/neo4j/data
 Docker/neo4j/conf
+Docker/**/data
 nebula/data
 logs
 venv
+.DS_store
+.idea
