@@ -78,6 +78,12 @@ except:
     print("no se pudo conectar, verificar que al menos un container este corriendo")
     exit()
 
+
+# crear csv con headers operation, time, thread, time_finish
+with open('memgraph.csv', 'w') as f:
+    f.write('operation,time,thread,time_finish\n')
+
+
 while array_querys[0] > 0 or array_querys[1] > 0:
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,

@@ -43,7 +43,7 @@ query_read = """MATCH (n:FirstNode)
 
 def thread_function(name):
     t1_start = perf_counter()
-    logging.info("Thread %s: starting", name)
+    #logging.info("Thread %s: starting", name)
 
     # choose random query
     query = query_read if random.randint(0, 1) == 0 else query_write(
@@ -52,7 +52,7 @@ def thread_function(name):
 
     # Execute the query
     results = memgraph.execute_and_fetch(query)
-    print(list(results)[0]['result'])
+    #print(list(results)[0]['result'])
 
     # restar lock
     if query == query_read:
@@ -64,12 +64,17 @@ def thread_function(name):
 
     t1_stop = perf_counter()
     logging.info(f'El thread {name} ejecutó la query de {query_type} en {t1_stop - t1_start}')
-    logging.info("Thread %s: finishing", name)
+    print("queries faltantes: " + str(array_querys))
+    #logging.info("Thread %s: finishing", name)
 
     # Save info into a csv file
     df = pd.DataFrame([[query_type, datetime.datetime.now(), name, t1_stop - t1_start]],
                       columns=['Operation', 'time', 'id_thread', 'time [s]'])
     df.to_csv('memgraph.csv', index=False, mode='a', header=False)
+
+# crear csv con headers operation, time, thread, time_finish
+with open('memgraph.csv', 'w') as f:
+    f.write('operation,time,thread,time_finish\n')
 
 
 while array_querys[0] > 0 or array_querys[1] > 0:
