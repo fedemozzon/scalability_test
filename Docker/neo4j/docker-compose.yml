@@ -42,6 +42,8 @@ services:
       - EXTENDED_CONF=yes
       - NEO4J_EDITION=docker_compose
       - NEO4J_initial_server_mode__constraint=PRIMARY
+      # memory transaction total max
+      - NEO4J_dbms.memory.transaction.total.max=3G
 
     # Simple check testing whether the port 7474 is opened.
     # If so, the instance running inside the container is considered as "healthy".
@@ -77,6 +79,7 @@ services:
       - EXTENDED_CONF=yes
       - NEO4J_EDITION=docker_compose
       - NEO4J_initial_server_mode__constraint=PRIMARY
+      - NEO4J_dbms.memory.transaction.total.max=3G
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
     user: ${USER_ID}:${GROUP_ID}
@@ -106,6 +109,7 @@ services:
       - EXTENDED_CONF=yes
       - NEO4J_EDITION=docker_compose
       - NEO4J_initial_server_mode__constraint=PRIMARY
+      - NEO4J_dbms.memory.transaction.total.max=3G
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
     user: ${USER_ID}:${GROUP_ID}
@@ -135,6 +139,7 @@ services:
       - EXTENDED_CONF=yes
       - NEO4J_EDITION=docker_compose
       - NEO4J_initial_server_mode__constraint=SECONDARY
+      - NEO4J_dbms.memory.transaction.total.max=3G
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
     user: ${USER_ID}:${GROUP_ID}
