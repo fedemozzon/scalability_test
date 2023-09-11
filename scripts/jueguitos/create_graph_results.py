@@ -3,13 +3,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Cargar nombre del archivo CSV como primer argumento
-if len(sys.argv) < 4:
-    print("Falta el nombre del archivo CSV, el intervalo o el titulo del nodo / relacion")
+if len(sys.argv) < 5:
+    print("Uso: python create_graph_results.py <filename> <intervalo filas> <titulo nodo> <db>")
     sys.exit(1)
 
 filename = sys.argv[1]
 intervalo = int(sys.argv[2])
-titulo = sys.argv[3]
+titulo_nodo = sys.argv[3]
+db = sys.argv[4]
 
 # Cargar el archivo CSV
 archivo_csv = filename
@@ -19,12 +20,12 @@ dataframe = pd.read_csv(archivo_csv)
 valores_tiempo = dataframe["Tiempo Individual"].tolist()
 
 # Crear el gráfico de evolución de tiempo con promedio cada 1000 filas
-plt.figure(figsize=(10, 6))  # Tamaño del gráfico (opcional)
+plt.figure(figsize=(40, 6))  # Tamaño del gráfico (opcional)
 
 # Configurar etiquetas y título del gráfico
 plt.xlabel(f"Número de filas (cada {intervalo})")
 plt.ylabel("Tiempo Promedio")
-plt.title(f"Evolución del Tiempo con Promedio cada {intervalo} filas de {titulo}")
+plt.title(f"{db}: Evolución del Tiempo con Promedio cada {intervalo} filas de {titulo_nodo}")
 
 # Calcular el promedio cada 1000 filas
 promedios = []
